@@ -3,16 +3,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rate/domain/entities/movie.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_rate/presentation/viewmodels/movie_viewmodel.dart';
 
-class RateMoviePage extends StatefulWidget {
+class RateMoviePage extends ConsumerStatefulWidget {
   final Movie movie;
   const RateMoviePage({super.key, required this.movie});
 
   @override
-  State<RateMoviePage> createState() => _RateMoviePageState();
+  ConsumerState<RateMoviePage> createState() => _RateMoviePageState();
 }
 
-class _RateMoviePageState extends State<RateMoviePage> {
+class _RateMoviePageState extends ConsumerState<RateMoviePage> {
   int _currentRating = 0;
 
   void _submitRating() {
@@ -23,6 +25,9 @@ class _RateMoviePageState extends State<RateMoviePage> {
       return;
     }
     // TODO: 실제 저장 로직 (UseCase 호출 등)
+    ref
+        .read(movieListProvider.notifier)
+        .rateMovie(widget.movie.id, _currentRating);
     Navigator.pop(context);
   }
 

@@ -2,19 +2,16 @@
 // TODO: 영화 목록 UI 구현
 import 'package:flutter/material.dart';
 import 'package:flutter_rate/domain/entities/movie.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_rate/presentation/viewmodels/movie_viewmodel.dart';
 
-class MovieListPage extends StatelessWidget {
+class MovieListPage extends ConsumerWidget {
   const MovieListPage({super.key});
 
-  // 더미 데이터 (임시)
-  final List<Movie> dummyMovies = const [
-    Movie(id: '1', title: 'Interstellar'),
-    Movie(id: '2', title: 'Inception'),
-    Movie(id: '3', title: 'The Matrix'),
-  ];
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final movies = ref.watch(movieListProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("영화 목록"),
@@ -28,20 +25,22 @@ class MovieListPage extends StatelessWidget {
         ],
       ),
       body: ListView.builder(
-        itemCount: dummyMovies.length,
+        itemCount: movies.length,
         itemBuilder: (context, index) {
-          final movie = dummyMovies[index];
+          final movie = movies[index];
           return ListTile(
             title: Text(movie.title),
-            trailing:
-                movie.rating != null
-                    ? Text(
-                      "${movie.rating}/5",
-                      style: const TextStyle(fontSize: 16),
-                    )
-                    : null,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(5, (i) {
+                return Icon(
+                  i < (movie.rating ?? 0) ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                  size: 20,
+                );
+              }),
+            ),
             onTap: () {
-              // TODO: 별점 입력 화면으로 이동
               Navigator.pushNamed(context, '/rate', arguments: movie);
             },
           );
