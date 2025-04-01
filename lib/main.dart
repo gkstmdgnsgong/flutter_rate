@@ -1,7 +1,31 @@
-/// 클린 아키텍처 기반 Flutter 프로젝트 스캐폴드
-/// 영화 별점 평가 앱 - MVP 구조
-
 // main.dart
+import 'package:flutter/material.dart';
+import 'presentation/pages/login_page.dart';
+import 'presentation/pages/movie_list_page.dart';
+import 'presentation/pages/rate_movie_page.dart';
+import 'domain/entities/movie.dart';
+
 void main() {
-  // TODO: 의존성 주입 초기화 및 앱 실행
+  runApp(const MovieApp());
+}
+
+class MovieApp extends StatelessWidget {
+  const MovieApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Movie Rating App',
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LoginPage(),
+        '/movies': (context) => const MovieListPage(),
+        '/rate': (context) {
+          final movie = ModalRoute.of(context)!.settings.arguments as Movie;
+          return RateMoviePage(movie: movie);
+        },
+      },
+    );
+  }
 }

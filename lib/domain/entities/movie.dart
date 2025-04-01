@@ -3,5 +3,5 @@ class Movie {
   final String title;
   final int? rating;
 
-  Movie({required this.id, required this.title, this.rating});
+  const Movie({required this.id, required this.title, this.rating});
 }
