@@ -16,7 +16,17 @@ class MovieListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("영화 목록")),
+      appBar: AppBar(
+        title: const Text("영화 목록"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+          ),
+        ],
+      ),
       body: ListView.builder(
         itemCount: dummyMovies.length,
         itemBuilder: (context, index) {
