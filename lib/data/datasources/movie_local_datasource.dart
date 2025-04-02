@@ -1,15 +1,35 @@
-import 'package:flutter_rate/domain/entities/movie.dart';
+// lib/data/datasources/movie_local_datasource.dart
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import '../../domain/entities/movie.dart';
 
 class MovieLocalDataSource {
   Future<List<Movie>> loadMovies() async {
-    // 더미 데이터 리턴
+    final prefs = await SharedPreferences.getInstance();
+    final ratingsJson = prefs.getString('ratings');
+    final ratings =
+        ratingsJson != null
+            ? Map<String, dynamic>.from(json.decode(ratingsJson))
+            : {};
+
     return [
-      Movie(id: '1', title: 'Interstellar'),
-      Movie(id: '2', title: 'Inception'),
-    ];
+      const Movie(id: '1', title: 'Interstellar'),
+      const Movie(id: '2', title: 'Inception'),
+      const Movie(id: '3', title: 'The Matrix'),
+    ].map((movie) {
+      final rating = ratings[movie.id];
+      return movie.copyWith(rating: rating);
+    }).toList();
   }
 
   Future<void> saveRating(String movieId, int rating) async {
-    // SharedPreferences 등에 저장하는 코드 작성
+    final prefs = await SharedPreferences.getInstance();
+    final ratingsJson = prefs.getString('ratings');
+    final ratings =
+        ratingsJson != null
+            ? Map<String, dynamic>.from(json.decode(ratingsJson))
+            : {};
+    ratings[movieId] = rating;
+    await prefs.setString('ratings', json.encode(ratings));
   }
 }
