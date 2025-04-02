@@ -1,6 +1,6 @@
 // main.dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/pages/login_page.dart';
 import 'presentation/pages/movie_list_page.dart';
 import 'presentation/pages/rate_movie_page.dart';
