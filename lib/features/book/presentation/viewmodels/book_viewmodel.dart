@@ -1,40 +1,41 @@
-// lib/presentation/viewmodels/book_viewmodel.dart
-// TODO: 상태관리 ViewModel 구현
-
+// lib/features/book/presentation/viewmodels/book_viewmodel.dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_rate/features/book/domain/entities/book.dart';
+import 'package:flutter_rate/features/book/data/datasources/book_remote_datasource.dart';
+import 'package:flutter_rate/features/book/data/datasources/book_local_datasource.dart';
 
 final bookListProvider = StateNotifierProvider<BookNotifier, List<Book>>((ref) {
-  return BookNotifier();
+  return BookNotifier(BookRemoteDataSource(), BookLocalDataSource());
 });
 
 class BookNotifier extends StateNotifier<List<Book>> {
-  BookNotifier()
-    : super([
-        const Book(
-          id: '1',
-          title: 'Interstellar',
-          authors: 'Christopher Nolan',
-          thumbnailUrl: '', // 임시로 비워둬도 OK
-        ),
-        const Book(
-          id: '2',
-          title: 'Inception',
-          authors: 'Christopher Nolan',
-          thumbnailUrl: '',
-        ),
-        const Book(
-          id: '3',
-          title: 'The Matrix',
-          authors: 'Lana Wachowski, Lilly Wachowski',
-          thumbnailUrl: '',
-        ),
-      ]);
+  final BookRemoteDataSource remoteDataSource;
+  final BookLocalDataSource localDataSource;
 
-  void ratebook(String bookId, int rating) {
+  BookNotifier(this.remoteDataSource, this.localDataSource) : super([]);
+
+  Future<void> loadBooks() async {
+    final books = await localDataSource.loadBooks();
+    state = books;
+  }
+
+  Future<void> fetchBooks(String query) async {
+    try {
+      final books = await remoteDataSource.fetchBooks(query);
+      final ratedBooks = await localDataSource.loadBooks();
+      final ratedMap = {for (var b in ratedBooks) b.id: b.rating};
+
+      state = books.map((b) => b.copyWith(rating: ratedMap[b.id])).toList();
+    } catch (e) {
+      state = [];
+    }
+  }
+
+  void rateBook(Book book) {
     state = [
-      for (final book in state)
-        if (book.id == bookId) book.copyWith(rating: rating) else book,
+      for (final b in state)
+        if (b.id == book.id) book else b,
     ];
+    localDataSource.saveBook(book);
   }
 }

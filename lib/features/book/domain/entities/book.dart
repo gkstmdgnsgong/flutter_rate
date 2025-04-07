@@ -1,3 +1,4 @@
+// lib/features/book/domain/entities/book.dart
 class Book {
   final String id;
   final String title;
@@ -13,13 +14,27 @@ class Book {
     this.rating,
   });
 
-  Book copyWith({int? rating}) {
-    return Book(
-      id: id,
-      title: title,
-      authors: authors,
-      thumbnailUrl: thumbnailUrl,
-      rating: rating ?? this.rating,
-    );
-  }
+  Book copyWith({int? rating}) => Book(
+    id: id,
+    title: title,
+    authors: authors,
+    thumbnailUrl: thumbnailUrl,
+    rating: rating ?? this.rating,
+  );
+
+  factory Book.fromJson(Map<String, dynamic> json) => Book(
+    id: json['id'] ?? '',
+    title: json['title'] ?? '',
+    authors: json['authors'] ?? '저자 미상',
+    thumbnailUrl: json['thumbnailUrl'] ?? '',
+    rating: json['rating'],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'authors': authors,
+    'thumbnailUrl': thumbnailUrl,
+    'rating': rating,
+  };
 }

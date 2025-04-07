@@ -1,11 +1,12 @@
 import '../repositories/book_repository.dart';
+import '../entities/book.dart';
 
-class Ratebook {
+class RateBook {
   final BookRepository repository;
 
-  Ratebook(this.repository);
+  RateBook(this.repository);
 
-  Future<void> call(String bookId, int rating) {
-    return repository.rateBook(bookId, rating);
+  Future<void> call(Book book) {
+    return repository.rateBook(book);
   }
 }

@@ -21,10 +21,10 @@ class bookApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
-        '/books': (context) => const bookListPage(),
+        '/books': (context) => const BookListPage(),
         '/rate': (context) {
           final book = ModalRoute.of(context)!.settings.arguments as Book;
-          return RatebookPage(book: book);
+          return RateBookPage(book: book);
         },
       },
     );

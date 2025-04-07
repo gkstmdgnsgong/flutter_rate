@@ -5,4 +5,5 @@ import 'package:flutter_rate/features/book/domain/entities/book.dart';
 abstract class BookRepository {
   Future<List<Book>> getbooks();
   Future<void> ratebook(String bookId, int rating);
+  Future<List<Book>> fetchBooks(String query);
 }
