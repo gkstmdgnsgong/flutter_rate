@@ -1,16 +1,16 @@
-// lib/presentation/pages/movie_list_page.dart
+// lib/presentation/pages/book_list_page.dart
 // TODO: 영화 목록 UI 구현
 import 'package:flutter/material.dart';
+import 'package:flutter_rate/features/book/presentation/widgets/book_card_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_rate/presentation/viewmodels/movie_viewmodel.dart';
-import 'package:flutter_rate/presentation/widgets/star_rating_widget.dart';
+import 'package:flutter_rate/features/book/presentation/viewmodels/book_viewmodel.dart';
 
-class MovieListPage extends ConsumerWidget {
-  const MovieListPage({super.key});
+class bookListPage extends ConsumerWidget {
+  const bookListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final movies = ref.watch(movieListProvider);
+    final books = ref.watch(bookListProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -25,14 +25,13 @@ class MovieListPage extends ConsumerWidget {
         ],
       ),
       body: ListView.builder(
-        itemCount: movies.length,
+        itemCount: books.length,
         itemBuilder: (context, index) {
-          final movie = movies[index];
-          return ListTile(
-            title: Text(movie.title),
-            trailing: StarRatingWidget(rating: movie.rating ?? 0),
+          final book = books[index];
+          return bookCardWidget(
+            book: book,
             onTap: () {
-              Navigator.pushNamed(context, '/rate', arguments: movie);
+              Navigator.pushNamed(context, '/rate', arguments: book);
             },
           );
         },

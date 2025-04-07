@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     // TODO: 실제 로그인 로직 또는 유스케이스 호출
-    Navigator.pushReplacementNamed(context, '/movies');
+    Navigator.pushReplacementNamed(context, '/books');
   }
 
   @override

@@ -1,30 +1,30 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'presentation/pages/login_page.dart';
-import 'presentation/pages/movie_list_page.dart';
-import 'presentation/pages/rate_movie_page.dart';
-import 'domain/entities/movie.dart';
+import 'features/book/domain/entities/book.dart';
+import 'features/book/presentation/pages/book_list_page.dart';
+import 'features/book/presentation/pages/login_page.dart';
+import 'features/book/presentation/pages/rate_book_page.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MovieApp()));
+  runApp(const ProviderScope(child: bookApp()));
 }
 
-class MovieApp extends StatelessWidget {
-  const MovieApp({super.key});
+class bookApp extends StatelessWidget {
+  const bookApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Movie Rating App',
+      title: 'book Rating App',
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
-        '/movies': (context) => const MovieListPage(),
+        '/books': (context) => const bookListPage(),
         '/rate': (context) {
-          final movie = ModalRoute.of(context)!.settings.arguments as Movie;
-          return RateMoviePage(movie: movie);
+          final book = ModalRoute.of(context)!.settings.arguments as Book;
+          return RatebookPage(book: book);
         },
       },
     );

@@ -1,24 +1,24 @@
-// lib/presentation/pages/rate_movie_page.dart
+// lib/presentation/pages/rate_book_page.dart
 // TODO: 별점 입력 UI 구현
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rate/domain/entities/movie.dart';
-import 'package:flutter_rate/presentation/widgets/star_rating_widget.dart';
+import 'package:flutter_rate/features/book/domain/entities/book.dart';
+import 'package:flutter_rate/features/book/presentation/widgets/star_rating_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_rate/presentation/viewmodels/movie_viewmodel.dart';
+import 'package:flutter_rate/features/book/presentation/viewmodels/book_viewmodel.dart';
 
-class RateMoviePage extends ConsumerStatefulWidget {
-  final Movie movie;
-  const RateMoviePage({super.key, required this.movie});
+class RatebookPage extends ConsumerStatefulWidget {
+  final Book book;
+  const RatebookPage({super.key, required this.book});
 
   @override
-  ConsumerState<RateMoviePage> createState() => _RateMoviePageState();
+  ConsumerState<RatebookPage> createState() => _RatebookPageState();
 }
 
-class _RateMoviePageState extends ConsumerState<RateMoviePage> {
+class _RatebookPageState extends ConsumerState<RatebookPage> {
   void initState() {
     super.initState();
-    _currentRating = widget.movie.rating ?? 0;
+    _currentRating = widget.book.rating ?? 0;
   }
 
   int _currentRating = 0;
@@ -32,15 +32,15 @@ class _RateMoviePageState extends ConsumerState<RateMoviePage> {
     }
     // TODO: 실제 저장 로직 (UseCase 호출 등)
     ref
-        .read(movieListProvider.notifier)
-        .rateMovie(widget.movie.id, _currentRating);
+        .read(bookListProvider.notifier)
+        .ratebook(widget.book.id, _currentRating);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.movie.title)),
+      appBar: AppBar(title: Text(widget.book.title)),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
